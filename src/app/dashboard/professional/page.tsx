@@ -19,6 +19,7 @@ import {
   Image as ImageIcon,
   MoreVertical,
   PlusCircle,
+  Bell,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -28,6 +29,8 @@ import { Textarea } from "@/components/ui/textarea";
 import { Card } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
 import Image from "next/image";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import { Separator } from "@/components/ui/separator";
 
 type Task = {
   id: string;
@@ -60,7 +63,7 @@ export default function ProfessionalDashboardPage() {
     );
   };
   
-  const completedTasks = tasks.filter(task => task.completed).length;
+  const completedTasks = tasks.filter(task => task.category === 'task' && task.completed).length;
   const totalTasks = tasks.filter(task => task.category === 'task').length;
   const progressPercentage = totalTasks > 0 ? (completedTasks / totalTasks) * 100 : 0;
   
@@ -156,9 +159,49 @@ export default function ProfessionalDashboardPage() {
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
             <Input placeholder="Buscar..." className="pl-9 bg-card border-border" />
           </div>
-          <Button variant="ghost" size="icon">
-            <MessageSquare className="w-5 h-5" />
-          </Button>
+          <Popover>
+            <PopoverTrigger asChild>
+              <Button variant="ghost" size="icon" className="relative">
+                <Bell className="w-5 h-5" />
+                <span className="absolute top-1.5 right-1.5 flex h-2.5 w-2.5">
+                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
+                  <span className="relative inline-flex rounded-full h-2 w-2 bg-red-500"></span>
+                </span>
+              </Button>
+            </PopoverTrigger>
+            <PopoverContent className="w-80 p-0">
+               <div className="p-4">
+                 <h4 className="font-medium text-sm">Notificaciones</h4>
+               </div>
+               <Separator />
+               <div className="p-4 space-y-4">
+                  <div className="flex items-start gap-3">
+                     <Avatar className="h-8 w-8">
+                       <AvatarImage src="https://i.pravatar.cc/150?u=a042581f4e29026704d" />
+                       <AvatarFallback>A</AvatarFallback>
+                     </Avatar>
+                     <div>
+                       <p className="text-sm"><b>Cliente A</b> ha comentado en <b>Alzado Norte</b>.</p>
+                       <p className="text-xs text-muted-foreground">hace 5 minutos</p>
+                     </div>
+                  </div>
+                  <div className="flex items-start gap-3">
+                     <Avatar className="h-8 w-8">
+                       <AvatarImage src="https://i.pravatar.cc/150?u=a042581f4e29026704e" />
+                       <AvatarFallback>B</AvatarFallback>
+                     </Avatar>
+                     <div>
+                       <p className="text-sm"><b>Cliente B</b> ha aprobado los <b>materiales</b>.</p>
+                       <p className="text-xs text-muted-foreground">hace 1 hora</p>
+                     </div>
+                  </div>
+               </div>
+                <Separator />
+                <div className="p-2 text-center">
+                    <Button variant="link" size="sm">Ver todos los mensajes</Button>
+                </div>
+            </PopoverContent>
+          </Popover>
         </header>
 
         <div className="mb-6">
@@ -166,7 +209,7 @@ export default function ProfessionalDashboardPage() {
                  <h2 className="text-lg font-semibold">Progreso del Proyecto</h2>
                  <span className="text-sm text-muted-foreground">{Math.round(progressPercentage)}%</span>
             </div>
-            <Progress value={progressPercentage} className="w-full" />
+            <Progress value={progressPercentage} className="w-full h-2" />
         </div>
 
         <div className="flex-1 overflow-y-auto pr-4 space-y-6">
@@ -254,5 +297,6 @@ export default function ProfessionalDashboardPage() {
       </aside>
     </div>
   );
+}
 
     
