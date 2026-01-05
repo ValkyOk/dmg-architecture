@@ -1,3 +1,52 @@
 {
-  "placeholderImages": []
+  "placeholderImages": [
+    {
+      "id": "hero-home",
+      "description": "Modern architectural building exterior",
+      "imageUrl": "https://images.unsplash.com/photo-1521713362244-1b5e5d150b29?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw2fHxtb2Rlcm4lMjBhcmNoaXRlY3R1cmV8ZW58MHx8fHwxNzY3NTY5OTQ1fDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "modern architecture"
+    },
+    {
+      "id": "about-david",
+      "description": "Professional portrait of an architect",
+      "imageUrl": "https://images.unsplash.com/photo-1611106014541-c82a68648bd9?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw4fHxhcmNoaXRlY3QlMjBwb3J0cmFpdHxlbnwwfHx8fDE3Njc2MzA5Nzd8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "architect portrait"
+    },
+    {
+      "id": "portfolio-1",
+      "description": "Render of a modern living room",
+      "imageUrl": "https://images.unsplash.com/photo-1600121848594-d8644e57abab?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw5fHxsaXZpbmclMjByb29tfGVufDB8fHx8MTc2NzYzODg2Mnww&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "living room"
+    },
+    {
+      "id": "portfolio-2",
+      "description": "Architectural plan blueprint",
+      "imageUrl": "https://images.unsplash.com/photo-1721244653652-268631ec049a?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw1fHxhcmNoaXRlY3R1cmFsJTIwcGxhbnxlbnwwfHx8fDE3Njc2NDY1NTN8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "architectural plan"
+    },
+    {
+      "id": "portfolio-3",
+      "description": "Completed modern house exterior",
+      "imageUrl": "https://images.unsplash.com/photo-1670589953882-b94c9cb380f5?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw3fHxtb2Rlcm4lMjBob3VzZXxlbnwwfHx8fDE3Njc2NDM1MDl8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "modern house"
+    },
+    {
+      "id": "portfolio-4",
+      "description": "3D render of a kitchen",
+      "imageUrl": "https://images.unsplash.com/photo-1636628751643-2a8c9fd001d4?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHxraXRjaGVuJTIwcmVuZGVyfGVufDB8fHx8MTc2NzY0NjU1M3ww&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "kitchen render"
+    },
+    {
+      "id": "portfolio-5",
+      "description": "Blueprint of a commercial building",
+      "imageUrl": "https://images.unsplash.com/photo-1721244654346-9be0c0129e36?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw4fHxidWlsZGluZyUyMGJsdWVwcmludHxlbnwwfHx8fDE3Njc2NDY1NTN8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "building blueprint"
+    },
+    {
+      "id": "portfolio-6",
+      "description": "Finished interior of an office",
+      "imageUrl": "https://images.unsplash.com/photo-1587702068694-a909ef4aa346?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw3fHxvZmZpY2UlMjBpbnRlcmlvcnxlbnwwfHx8fDE3Njc1ODU1NDB8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "office interior"
+    }
+  ]
 }
