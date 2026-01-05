@@ -10,9 +10,6 @@ export default function AboutPage() {
     <div className="container py-16 md:py-24">
       <div className="text-center mb-12">
         <h1 className="text-4xl md:text-5xl font-headline text-foreground mb-4">Sobre David Montoya Giraldo</h1>
-        <p className="max-w-3xl mx-auto text-lg text-muted-foreground">
-          Hola, soy David Montoya Giraldo, estudiante de Arquitectura en la Universidad Católica de Pereira. Actualmente estoy buscando una oportunidad de prácticas para aplicar mis conocimientos académicos y ganar experiencia práctica en las múltiples áreas en las que se puede desempeñar la arquitectura. Pueden contactarme por correo electrónico a David.montoya@ucp.edu.co o por teléfono al +57 3196984388. Estoy emocionado por la posibilidad de aprender y contribuir en el campo de diseño en general, pero más enfocado en diseños.
-        </p>
       </div>
 
       <div className="grid md:grid-cols-5 gap-12 items-start">
