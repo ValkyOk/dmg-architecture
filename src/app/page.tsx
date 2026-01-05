@@ -8,7 +8,7 @@ import Link from 'next/link';
 import { useLanguage } from '@/context/language-context';
 
 
-export default function Home() {
+export default function HomePage() {
   const { translations } = useLanguage();
 
   const services = [
