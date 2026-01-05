@@ -5,8 +5,8 @@ import { Footer } from '@/components/layout/footer';
 import { Toaster } from '@/components/ui/toaster';
 
 export const metadata: Metadata = {
-  title: 'DMG Arquitectura',
-  description: 'Sitio web para el arquitecto David Montoya Giraldo.',
+  title: 'DMG ARCHITECTURE',
+  description: 'Website for architect David Montoya Giraldo.',
   icons: {
     icon: '/favicon.ico',
   }
@@ -18,7 +18,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="es" suppressHydrationWarning>
+    <html lang="en" suppressHydrationWarning>
       <head>
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />

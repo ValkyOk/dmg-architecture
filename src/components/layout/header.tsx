@@ -19,7 +19,7 @@ export function Header() {
         <div className="flex-1 flex justify-start">
           <Link href="/" className="flex items-center space-x-2">
             <Building2 className="h-6 w-6 text-primary" />
-            <span className="font-bold font-headline text-lg hidden sm:inline-block">DMG ARQUITECTURA</span>
+            <span className="font-bold font-headline text-lg hidden sm:inline-block">DMG ARCHITECTURE</span>
           </Link>
         </div>
         <nav className="hidden md:flex flex-1 justify-center items-center space-x-6 text-sm font-medium">
@@ -47,7 +47,7 @@ export function Header() {
                   <div className="flex-1 pt-8">
                   <Link href="/" className="mr-6 flex items-center space-x-2 mb-8">
                     <Building2 className="h-6 w-6 text-primary" />
-                    <span className="font-bold font-headline text-lg">DMG ARQUITECTURA</span>
+                    <span className="font-bold font-headline text-lg">DMG ARCHITECTURE</span>
                   </Link>
                   <nav className="flex flex-col space-y-4">
                     {navLinks.map((link) => (

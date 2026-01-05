@@ -8,7 +8,7 @@ export function Footer() {
         <div className="flex flex-col md:flex-row justify-between items-center gap-6">
           <div className="flex items-center space-x-2">
             <Building2 className="h-6 w-6 text-primary" />
-            <span className="font-bold font-headline text-lg">DMG ARQUITECTURA</span>
+            <span className="font-bold font-headline text-lg">DMG ARCHITECTURE</span>
           </div>
           <p className="text-sm text-center md:text-left">© {new Date().getFullYear()} David Montoya Giraldo. Todos los derechos reservados.</p>
           <div className="flex items-center space-x-4">
