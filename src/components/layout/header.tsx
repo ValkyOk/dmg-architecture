@@ -24,12 +24,12 @@ export function Header() {
         <div className="flex-1 flex justify-start">
           <Link href="/" className="flex items-center space-x-2">
             <Building2 className="h-6 w-6 text-primary" />
-            <span className="font-bold font-headline text-lg hidden sm:inline-block text-white">DMG ARCHITECTURE</span>
+            <span className="font-bold font-headline text-lg hidden sm:inline-block text-primary-foreground">DMG ARCHITECTURE</span>
           </Link>
         </div>
         <nav className="hidden md:flex flex-1 justify-center items-center space-x-6 text-sm font-medium">
           {navLinks.map((link) => (
-            <Link key={link.href} href={link.href} className="transition-colors text-white hover:text-primary">
+            <Link key={link.href} href={link.href} className="transition-colors text-primary-foreground hover:text-primary">
               {link.label}
             </Link>
           ))}
@@ -42,7 +42,7 @@ export function Header() {
           <div className="md:hidden">
             <Sheet>
               <SheetTrigger asChild>
-                <Button variant="ghost" size="icon" className="text-white hover:text-white">
+                <Button variant="ghost" size="icon" className="text-primary-foreground hover:text-primary-foreground">
                   <Menu className="h-5 w-5" />
                   <span className="sr-only">Toggle Menu</span>
                 </Button>
