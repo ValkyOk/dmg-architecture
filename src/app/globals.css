@@ -16,7 +16,7 @@
     --secondary-foreground: 0 0% 98%;
     --muted: 210 9% 25%;
     --muted-foreground: 210 5% 63%; /* Light Gray for text */
-    --accent: 71 31% 40%; /* #5c6b2f - adjusted accent */
+    --accent: 83 25% 55%; /* #98ab6f */
     --accent-foreground: 0 0% 98%;
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 0 0% 98%;
@@ -45,19 +45,19 @@
     --card-foreground: 0 0% 98%;
     --popover: 210 9% 15%;
     --popover-foreground: 0 0% 98%;
-    --primary: 71 31% 40%;
+    --primary: 71 51% 20%;
     --primary-foreground: 0 0% 98%;
     --secondary: 210 9% 25%;
     --secondary-foreground: 0 0% 98%;
     --muted: 210 9% 25%;
     --muted-foreground: 210 5% 63%;
-    --accent: 71 51% 20%;
+    --accent: 83 25% 55%;
     --accent-foreground: 0 0% 98%;
     --destructive: 0 62.8% 30.6%;
     --destructive-foreground: 0 0% 98%;
     --border: 210 9% 30%;
     --input: 210 9% 30%;
-    --ring: 71 31% 40%;
+    --ring: 71 51% 20%;
     --chart-1: 220 70% 50%;
     --chart-2: 160 60% 45%;
     --chart-3: 30 80% 55%;

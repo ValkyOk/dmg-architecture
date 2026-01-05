@@ -13,17 +13,17 @@ export default function HomePage() {
 
   const services = [
     {
-      icon: <DraftingCompass className="w-8 h-8 text-primary" />,
+      icon: <DraftingCompass className="w-8 h-8 text-accent" />,
       title: translations.home.service_1_title,
       description: translations.home.service_1_desc,
     },
     {
-      icon: <Building className="w-8 h-8 text-primary" />,
+      icon: <Building className="w-8 h-8 text-accent" />,
       title: translations.home.service_2_title,
       description: translations.home.service_2_desc,
     },
     {
-      icon: <HomeIcon className="w-8 h-8 text-primary" />,
+      icon: <HomeIcon className="w-8 h-8 text-accent" />,
       title: translations.home.service_3_title,
       description: translations.home.service_3_desc,
     }
@@ -70,7 +70,7 @@ export default function HomePage() {
             {services.map((service, index) => (
               <Card key={index} className="text-center border-2 border-transparent hover:border-primary hover:shadow-lg transition-all duration-300">
                 <CardHeader>
-                  <div className="mx-auto bg-accent/20 rounded-full p-4 w-fit mb-4">
+                  <div className="mx-auto bg-primary/10 rounded-full p-4 w-fit mb-4">
                     {service.icon}
                   </div>
                   <CardTitle className="font-headline text-2xl">{service.title}</CardTitle>
