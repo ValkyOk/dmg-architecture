@@ -2,8 +2,8 @@
   "placeholderImages": [
     {
       "id": "hero-home",
-      "description": "Minimalist architecture with natural elements",
-      "imageUrl": "https://images.unsplash.com/photo-1490352126292-207608244b05?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHxtaW5pbWFsaXN0JTIwYXJjaGl0ZWN0dXJlJTIwbmF0dXJlfGVufDB8fHx8MTY5OTI2NzU4NHww&ixlib=rb-4.1.0&q=80&w=1080",
+      "description": "Minimalist architecture with a pool and nature view",
+      "imageUrl": "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw1fHxtaW5pbWFsaXN0JTIwYXJjaGl0ZWN0dXJlJTIwbmF0dXJlfGVufDB8fHx8MTY5OTI2NzU4NHww&ixlib=rb-4.1.0&q=80&w=1080",
       "imageHint": "minimalist nature"
     },
     {
