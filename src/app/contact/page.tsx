@@ -23,7 +23,7 @@ export default function ContactPage() {
                             <MapPin className="w-5 h-5 text-accent mt-1" />
                             <div>
                                 <h4 className="font-semibold">Ubicación</h4>
-                                <p>Medellín, Antioquia, Colombia</p>
+                                <p>Pereira, Risaralda, Colombia</p>
                                 <p className="text-sm">(Atención con cita previa)</p>
                             </div>
                         </div>
@@ -31,14 +31,14 @@ export default function ContactPage() {
                             <Mail className="w-5 h-5 text-accent mt-1" />
                             <div>
                                 <h4 className="font-semibold">Correo Electrónico</h4>
-                                <a href="mailto:david.montoya@dmg-arq.com" className="hover:text-primary transition-colors">david.montoya@dmg-arq.com</a>
+                                <a href="mailto:Davidm0216@gmail.com" className="hover:text-primary transition-colors">Davidm0216@gmail.com</a>
                             </div>
                         </div>
                          <div className="flex items-start gap-4">
                             <Phone className="w-5 h-5 text-accent mt-1" />
                              <div>
                                 <h4 className="font-semibold">Teléfono</h4>
-                                <p>+57 300 123 4567</p>
+                                <p>+57 319 698 4388</p>
                             </div>
                         </div>
                     </div>
