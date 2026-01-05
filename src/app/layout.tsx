@@ -4,6 +4,7 @@ import { Header } from '@/components/layout/header';
 import { Footer } from '@/components/layout/footer';
 import { Toaster } from '@/components/ui/toaster';
 import { LanguageProvider } from '@/context/language-context';
+import { WhatsAppButton } from '@/components/whatsapp-button';
 
 export const metadata: Metadata = {
   title: 'DMG ARCHITECTURE',
@@ -28,9 +29,10 @@ export default function RootLayout({
       <body className="font-body antialiased flex flex-col min-h-screen bg-background">
         <LanguageProvider>
             <Header />
-            <main className="-mt-16">{children}</main>
+            <main className="flex-grow">{children}</main>
             <Footer />
             <Toaster />
+            <WhatsAppButton />
         </LanguageProvider>
       </body>
     </html>
