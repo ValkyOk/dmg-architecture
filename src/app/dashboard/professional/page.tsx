@@ -1,18 +1,13 @@
+
 "use client";
 
-import { useMemoFirebase, useUser, useFirestore, useCollection } from "@/firebase";
-import { collection } from "firebase/firestore";
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
+import { useState, useMemo } from "react";
 import {
-  PlusCircle,
   Folder,
-  Loader2,
   ChevronLeft,
   Search,
   MessageSquare,
   File,
-  Paperclip,
   Video,
   Link as LinkIcon,
   Columns,
@@ -23,29 +18,62 @@ import {
   Archive,
   Image as ImageIcon,
   MoreVertical,
+  PlusCircle,
 } from "lucide-react";
-import { useLanguage } from "@/context/language-context";
-import { AddProjectDialog } from "@/components/dashboard/add-project-dialog";
-import Image from "next/image";
-import { Badge } from "@/components/ui/badge";
-import { Skeleton } from "@/components/ui/skeleton";
-import type { Project } from "@/lib/data";
+import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Textarea } from "@/components/ui/textarea";
+import { Card } from "@/components/ui/card";
+import { Progress } from "@/components/ui/progress";
+import Image from "next/image";
+
+type Task = {
+  id: string;
+  label: string;
+  completed: boolean;
+  timestamp?: string;
+  category: 'task' | 'file' | 'image';
+  date: string;
+  content?: string;
+  imageUrl?: string;
+};
+
+const initialTasks: Task[] = [
+    { id: 'task1', label: 'Enviar planos al ayuntamiento', completed: false, category: 'task', date: '28 DE AGOSTO', timestamp: '10:00' },
+    { id: 'task2', label: 'Memoria justificativa.doc', completed: false, category: 'file', date: '28 DE AGOSTO', timestamp: '15:00' },
+    { id: 'task3', label: 'Revisar propuesta de materiales con cliente', completed: false, category: 'task', date: '29 DE AGOSTO', timestamp: '11:30' },
+    { id: 'task4', label: 'Actualizar modelo 3D con cambios', completed: false, category: 'task', date: 'HOY', timestamp: '09:00' },
+    { id: 'task5', label: 'Alzado de la cara norte, para que veas la distribución de los materiales.', completed: false, category: 'image', date: 'HOY', imageUrl: 'https://images.unsplash.com/photo-1670589953882-b94c9cb380f5?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw3fHxtb2Rlcm4lMjBob3VzZXxlbnwwfHx8fDE3Njc2NDM1MDl8MA&ixlib=rb-4.1.0&q=80&w=1080'},
+];
+
 
 export default function ProfessionalDashboardPage() {
-  const { translations } = useLanguage();
-  const { user } = useUser();
-  const firestore = useFirestore();
+  const [tasks, setTasks] = useState<Task[]>(initialTasks);
 
-  const projectsCollectionRef = useMemoFirebase(() => {
-    if (!user || !firestore) return null;
-    return collection(firestore, `professionals/${user.uid}/projects`);
-  }, [firestore, user]);
+  const toggleTask = (taskId: string) => {
+    setTasks(prevTasks =>
+      prevTasks.map(task =>
+        task.id === taskId ? { ...task, completed: !task.completed } : task
+      )
+    );
+  };
   
-  const { data: projects, isLoading } = useCollection<Omit<Project, 'id' | 'image' > & { imageUrl: string }>(projectsCollectionRef);
+  const completedTasks = tasks.filter(task => task.completed).length;
+  const totalTasks = tasks.filter(task => task.category === 'task').length;
+  const progressPercentage = totalTasks > 0 ? (completedTasks / totalTasks) * 100 : 0;
+  
+  const groupedTasks = useMemo(() => {
+    return tasks.reduce((acc, task) => {
+      const date = task.date;
+      if (!acc[date]) {
+        acc[date] = [];
+      }
+      acc[date].push(task);
+      return acc;
+    }, {} as Record<string, Task[]>);
+  }, [tasks]);
 
   return (
     <div className="flex h-[calc(100vh-4rem)] bg-background text-foreground">
@@ -123,7 +151,7 @@ export default function ProfessionalDashboardPage() {
 
       {/* Main Content */}
       <main className="flex-1 flex flex-col p-6">
-        <header className="flex items-center justify-between mb-6">
+        <header className="flex items-center justify-between mb-4">
           <div className="relative w-full max-w-sm">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
             <Input placeholder="Buscar..." className="pl-9 bg-card border-border" />
@@ -133,35 +161,53 @@ export default function ProfessionalDashboardPage() {
           </Button>
         </header>
 
+        <div className="mb-6">
+            <div className="flex items-center gap-4 mb-2">
+                 <h2 className="text-lg font-semibold">Progreso del Proyecto</h2>
+                 <span className="text-sm text-muted-foreground">{Math.round(progressPercentage)}%</span>
+            </div>
+            <Progress value={progressPercentage} className="w-full" />
+        </div>
+
         <div className="flex-1 overflow-y-auto pr-4 space-y-6">
-            <div>
-                <p className="text-xs text-muted-foreground text-center mb-2">28 DE AGOSTO</p>
-                <Card className="p-3">
-                    <div className="flex items-center">
-                        <Checkbox id="task1" className="mr-3"/>
-                        <label htmlFor="task1" className="flex-1 text-sm">Enviar planos al ayuntamiento</label>
-                        <span className="text-xs text-muted-foreground">10:00</span>
-                    </div>
-                </Card>
-            </div>
-            <div>
-                <Card className="p-3">
-                    <div className="flex items-center">
-                        <File className="w-4 h-4 mr-3 text-muted-foreground"/>
-                        <span className="flex-1 text-sm">Memoria justificativa.doc</span>
-                        <span className="text-xs text-muted-foreground">15:00</span>
-                    </div>
-                </Card>
-            </div>
-            <div>
-                <p className="text-xs text-muted-foreground text-center mb-2">HOY</p>
-                <Card className="p-4">
-                    <div className="relative aspect-[16/9] w-full mb-3 rounded-md overflow-hidden">
-                        <Image src="https://images.unsplash.com/photo-1670589953882-b94c9cb380f5?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw3fHxtb2Rlcm4lMjBob3VzZXxlbnwwfHx8fDE3Njc2NDM1MDl8MA&ixlib=rb-4.1.0&q=80&w=1080" layout="fill" objectFit="cover" alt="Vista de la casa"/>
-                    </div>
-                    <p className="text-sm text-muted-foreground">Alzado de la cara norte, para que veas la distribución de los materiales.</p>
-                </Card>
-            </div>
+            {Object.entries(groupedTasks).map(([date, tasksInDate]) => (
+                <div key={date}>
+                    <p className="text-xs text-muted-foreground text-center mb-2">{date}</p>
+                    {tasksInDate.map((task) => (
+                        <Card key={task.id} className="mb-3">
+                            {task.category === 'task' && (
+                                <div className="p-3 flex items-center">
+                                    <Checkbox
+                                        id={task.id}
+                                        checked={task.completed}
+                                        onCheckedChange={() => toggleTask(task.id)}
+                                        className="mr-3"
+                                    />
+                                    <label htmlFor={task.id} className={`flex-1 text-sm ${task.completed ? 'line-through text-muted-foreground' : ''}`}>
+                                        {task.label}
+                                    </label>
+                                    <span className="text-xs text-muted-foreground">{task.timestamp}</span>
+                                </div>
+                            )}
+                             {task.category === 'file' && (
+                                <div className="p-3 flex items-center">
+                                    <File className="w-4 h-4 mr-3 text-muted-foreground"/>
+                                    <span className="flex-1 text-sm">{task.label}</span>
+                                    <span className="text-xs text-muted-foreground">{task.timestamp}</span>
+                                </div>
+                             )}
+                             {task.category === 'image' && task.imageUrl && (
+                                <div className="p-4">
+                                     <div className="relative aspect-[16/9] w-full mb-3 rounded-md overflow-hidden">
+                                        <Image src={task.imageUrl} layout="fill" objectFit="cover" alt={task.label}/>
+                                    </div>
+                                    <p className="text-sm text-muted-foreground">{task.label}</p>
+                                </div>
+                             )}
+                        </Card>
+                    ))}
+                </div>
+            ))}
         </div>
       </main>
 
@@ -208,4 +254,5 @@ export default function ProfessionalDashboardPage() {
       </aside>
     </div>
   );
-}
+
+    
