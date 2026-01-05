@@ -2,13 +2,11 @@
 
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { PlaceHolderImages } from '@/lib/placeholder-images';
 import { Building, DraftingCompass, Home as HomeIcon } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useLanguage } from '@/context/language-context';
 
-const heroImage = PlaceHolderImages.find(p => p.id === 'hero-home');
 
 export default function Home() {
   const { translations } = useLanguage();
@@ -36,16 +34,16 @@ export default function Home() {
       {/* Hero Section */}
       <section className="relative h-[60vh] md:h-[80vh] w-full flex items-center justify-center text-center text-white">
         <div className="absolute inset-0 bg-black/50 z-10" />
-        {heroImage && (
+        
           <Image
-            src={heroImage.imageUrl}
-            alt={heroImage.description}
+            src="/presentación.jpg"
+            alt="Presentación DMG Architecture"
             fill
             className="object-cover"
             priority
-            data-ai-hint={heroImage.imageHint}
+            data-ai-hint="minimalist architecture"
           />
-        )}
+        
         <div className="relative z-20 max-w-4xl px-4">
           <h1 className="text-4xl md:text-6xl font-headline mb-4 drop-shadow-md">
             {translations.home.hero_title}
