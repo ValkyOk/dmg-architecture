@@ -11,9 +11,11 @@ import { Languages } from "lucide-react";
 import { useState } from "react";
 
 export function LanguageSwitcher() {
-  // In a real app, you'd use a i18n library (like next-intl) and context.
-  // This is a UI placeholder.
   const [language, setLanguage] = useState("ES");
+
+  const toggleLanguage = () => {
+    setLanguage(current => current === "ES" ? "EN" : "ES");
+  }
 
   return (
     <DropdownMenu>
