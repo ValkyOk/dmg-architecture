@@ -19,30 +19,30 @@ export function Header() {
   ];
 
   return (
-    <header className="sticky top-0 z-50 w-full border-b bg-background/30 backdrop-blur-sm supports-[backdrop-filter]:bg-background/30">
+    <header className="absolute top-0 z-50 w-full border-b border-white/20 bg-black/30 backdrop-blur-sm">
       <div className="container flex h-16 items-center">
         <div className="flex-1 flex justify-start">
           <Link href="/" className="flex items-center space-x-2">
             <Building2 className="h-6 w-6 text-primary" />
-            <span className="font-bold font-headline text-lg hidden sm:inline-block">DMG ARCHITECTURE</span>
+            <span className="font-bold font-headline text-lg hidden sm:inline-block text-white">DMG ARCHITECTURE</span>
           </Link>
         </div>
         <nav className="hidden md:flex flex-1 justify-center items-center space-x-6 text-sm font-medium">
           {navLinks.map((link) => (
-            <Link key={link.href} href={link.href} className="transition-colors hover:text-primary">
+            <Link key={link.href} href={link.href} className="transition-colors text-white hover:text-primary">
               {link.label}
             </Link>
           ))}
         </nav>
         <div className="flex flex-1 items-center justify-end space-x-2 sm:space-x-4">
           <LanguageSwitcher />
-          <Button asChild className="hidden md:inline-flex">
+          <Button asChild className="hidden md:inline-flex bg-primary hover:bg-primary/90 text-primary-foreground">
             <Link href="/login">{translations.header.access}</Link>
           </Button>
           <div className="md:hidden">
             <Sheet>
               <SheetTrigger asChild>
-                <Button variant="ghost" size="icon">
+                <Button variant="ghost" size="icon" className="text-white hover:text-white">
                   <Menu className="h-5 w-5" />
                   <span className="sr-only">Toggle Menu</span>
                 </Button>
