@@ -24,7 +24,7 @@ export function Header() {
       <div className="container flex h-16 items-center">
         <div className="flex-1 flex justify-start">
           <Link href="/" className="flex items-center space-x-2">
-            <Image src="/DMG_Architecture.png" alt="DMG Architecture Logo" width={150} height={40} className="object-contain" />
+            <Image src="/DMG_Architecture.png" alt="DMG Architecture Logo" width={120} height={32} className="object-contain" />
           </Link>
         </div>
         <nav className="hidden md:flex flex-1 justify-center items-center space-x-6 text-sm font-medium">
@@ -51,7 +51,7 @@ export function Header() {
                 <div className="flex flex-col h-full">
                   <div className="flex-1 pt-8">
                   <Link href="/" className="mr-6 flex items-center space-x-2 mb-8">
-                     <Image src="/DMG_Architecture.png" alt="DMG Architecture Logo" width={150} height={40} className="object-contain" />
+                     <Image src="/DMG_Architecture.png" alt="DMG Architecture Logo" width={120} height={32} className="object-contain" />
                   </Link>
                   <nav className="flex flex-col space-y-4">
                     {navLinks.map((link) => (
