@@ -3,9 +3,10 @@
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { LanguageSwitcher } from '@/components/language-switcher';
-import { Menu, Building2 } from 'lucide-react';
+import { Menu } from 'lucide-react';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 import { useLanguage } from '@/context/language-context';
+import Image from 'next/image';
 
 export function Header() {
   const { translations } = useLanguage();
@@ -23,8 +24,7 @@ export function Header() {
       <div className="container flex h-16 items-center">
         <div className="flex-1 flex justify-start">
           <Link href="/" className="flex items-center space-x-2">
-            <Building2 className="h-6 w-6 text-primary" />
-            <span className="font-bold font-headline text-lg hidden sm:inline-block text-foreground">DMG ARCHITECTURE</span>
+            <Image src="/DMG_Architecture.png" alt="DMG Architecture Logo" width={150} height={40} className="object-contain" />
           </Link>
         </div>
         <nav className="hidden md:flex flex-1 justify-center items-center space-x-6 text-sm font-medium">
@@ -51,8 +51,7 @@ export function Header() {
                 <div className="flex flex-col h-full">
                   <div className="flex-1 pt-8">
                   <Link href="/" className="mr-6 flex items-center space-x-2 mb-8">
-                    <Building2 className="h-6 w-6 text-primary" />
-                    <span className="font-bold font-headline text-lg">DMG ARCHITECTURE</span>
+                     <Image src="/DMG_Architecture.png" alt="DMG Architecture Logo" width={150} height={40} className="object-contain" />
                   </Link>
                   <nav className="flex flex-col space-y-4">
                     {navLinks.map((link) => (

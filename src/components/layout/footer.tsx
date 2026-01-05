@@ -1,7 +1,8 @@
 "use client";
-import { Building2, Facebook, Instagram, Linkedin } from 'lucide-react';
+import { Facebook, Instagram, Linkedin } from 'lucide-react';
 import Link from 'next/link';
 import { useLanguage } from '@/context/language-context';
+import Image from 'next/image';
 
 export function Footer() {
   const { translations } = useLanguage();
@@ -10,8 +11,7 @@ export function Footer() {
       <div className="container py-8">
         <div className="flex flex-col md:flex-row justify-between items-center gap-6">
           <div className="flex items-center space-x-2">
-            <Building2 className="h-6 w-6 text-primary" />
-            <span className="font-bold font-headline text-lg">DMG ARCHITECTURE</span>
+            <Image src="/DMG_Architecture.png" alt="DMG Architecture Logo" width={120} height={32} className="object-contain" />
           </div>
           <p className="text-sm text-center md:text-left">© {new Date().getFullYear()} David Montoya Giraldo. {translations.footer.copy}</p>
           <div className="flex items-center space-x-4">
