@@ -3,13 +3,28 @@
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { LanguageSwitcher } from '@/components/language-switcher';
-import { Menu } from 'lucide-react';
+import { Menu, LogOut } from 'lucide-react';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 import { useLanguage } from '@/context/language-context';
 import Image from 'next/image';
+import { useAuth, useUser } from '@/firebase';
+import { getAuth, signOut } from 'firebase/auth';
+import { useRouter } from 'next/navigation';
 
 export function Header() {
   const { translations } = useLanguage();
+  const { user, isUserLoading } = useUser();
+  const auth = useAuth();
+  const router = useRouter();
+
+  const handleLogout = async () => {
+    try {
+      await signOut(auth);
+      router.push('/');
+    } catch (error) {
+      console.error("Error signing out: ", error);
+    }
+  };
   
   const navLinks = [
     { href: '/', label: translations.header.home },
@@ -36,9 +51,20 @@ export function Header() {
         </nav>
         <div className="flex flex-1 items-center justify-end space-x-2 sm:space-x-4">
           <LanguageSwitcher />
-          <Button asChild className="hidden md:inline-flex bg-primary hover:bg-primary/90 text-primary-foreground">
-            <Link href="/login">{translations.header.access}</Link>
-          </Button>
+          {!isUserLoading && (
+            user ? (
+              <div className="hidden md:flex items-center gap-4">
+                 <span className="text-sm text-foreground/80">{user.email}</span>
+                 <Button variant="ghost" size="icon" onClick={handleLogout} aria-label="Cerrar sesión">
+                   <LogOut className="h-5 w-5" />
+                 </Button>
+              </div>
+            ) : (
+              <Button asChild className="hidden md:inline-flex bg-primary hover:bg-primary/90 text-primary-foreground">
+                <Link href="/login">{translations.header.access}</Link>
+              </Button>
+            )
+          )}
           <div className="md:hidden">
             <Sheet>
               <SheetTrigger asChild>
@@ -61,9 +87,21 @@ export function Header() {
                     ))}
                   </nav>
                   </div>
-                  <Button asChild className="w-full">
-                    <Link href="/login">{translations.header.access}</Link>
-                  </Button>
+                  {!isUserLoading && (
+                     user ? (
+                        <div className="flex flex-col items-start gap-4">
+                           <span className="text-sm text-foreground/80 px-4">{user.email}</span>
+                           <Button onClick={handleLogout} className="w-full">
+                            <LogOut className="mr-2 h-4 w-4" />
+                            Cerrar sesión
+                           </Button>
+                        </div>
+                     ) : (
+                        <Button asChild className="w-full">
+                           <Link href="/login">{translations.header.access}</Link>
+                        </Button>
+                     )
+                  )}
                 </div>
               </SheetContent>
             </Sheet>
