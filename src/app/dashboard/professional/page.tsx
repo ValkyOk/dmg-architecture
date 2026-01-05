@@ -1,7 +1,6 @@
 "use client";
 
-import { useMemo } from "react";
-import { useUser, useFirestore, useCollection } from "@/firebase";
+import { useMemoFirebase, useUser, useFirestore, useCollection } from "@/firebase";
 import { collection } from "firebase/firestore";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -19,14 +18,14 @@ export default function ProfessionalDashboardPage() {
   const { user } = useUser();
   const firestore = useFirestore();
 
-  const projectsCollectionRef = useMemo(() => {
-    if (!user) return null;
+  const projectsCollectionRef = useMemoFirebase(() => {
+    if (!user || !firestore) return null;
     return collection(firestore, `professionals/${user.uid}/projects`);
   }, [firestore, user]);
   
-  const { data: projects, isLoading } = useCollection<Omit<Project, 'id' | 'image' > & { imageUrl: string }>(projectsCollectionRef as any);
+  const { data: projects, isLoading } = useCollection<Omit<Project, 'id' | 'image' > & { imageUrl: string }>(projectsCollectionRef);
 
-  const typeMap: Record<Project['type'], { label: string, variant: 'default' | 'secondary' | 'outline' }> = {
+  const typeMap: Record<string, { label: string, variant: 'default' | 'secondary' | 'outline' }> = {
     completed: { label: translations.portfolio.project_type_completed, variant: 'default' },
     render: { label: translations.portfolio.project_type_render, variant: 'secondary' },
     plan: { label: translations.portfolio.project_type_plan, variant: 'outline' },
@@ -74,8 +73,8 @@ export default function ProfessionalDashboardPage() {
                             <CardDescription className="line-clamp-3">{project.description}</CardDescription>
                         </CardContent>
                         <CardFooter className="p-4 pt-0">
-                            <Badge variant={typeMap[project.projectType as Project['type']]?.variant || 'default'}>
-                                {typeMap[project.projectType as Project['type']]?.label || project.projectType}
+                            <Badge variant={typeMap[project.projectType as string]?.variant || 'default'}>
+                                {typeMap[project.projectType as string]?.label || project.projectType}
                             </Badge>
                         </CardFooter>
                     </Card>
