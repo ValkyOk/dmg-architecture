@@ -16,16 +16,19 @@ import {
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/hooks/use-toast";
-
-const formSchema = z.object({
-  name: z.string().min(2, "El nombre debe tener al menos 2 caracteres."),
-  email: z.string().email("Por favor ingresa un correo electrónico válido."),
-  subject: z.string().min(3, "El asunto debe tener al menos 3 caracteres."),
-  message: z.string().min(10, "El mensaje debe tener al menos 10 caracteres."),
-});
+import { useLanguage } from "@/context/language-context";
 
 export function ContactForm() {
+    const { translations } = useLanguage();
     const { toast } = useToast();
+
+    const formSchema = z.object({
+        name: z.string().min(2, translations.validation.name_min),
+        email: z.string().email(translations.validation.email_invalid),
+        subject: z.string().min(3, translations.validation.subject_min),
+        message: z.string().min(10, translations.validation.message_min),
+    });
+
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: {
@@ -39,8 +42,8 @@ export function ContactForm() {
     function onSubmit(values: z.infer<typeof formSchema>) {
         console.log(values);
         toast({
-            title: "Mensaje Enviado",
-            description: "Gracias por contactarnos. Te responderemos a la brevedad.",
+            title: translations.contact.toast_success_title,
+            description: translations.contact.toast_success_desc,
         });
         form.reset();
     }
@@ -54,9 +57,9 @@ export function ContactForm() {
                         name="name"
                         render={({ field }) => (
                             <FormItem>
-                                <FormLabel>Nombre</FormLabel>
+                                <FormLabel>{translations.contact.form_name_label}</FormLabel>
                                 <FormControl>
-                                    <Input placeholder="Tu nombre" {...field} />
+                                    <Input placeholder={translations.contact.form_name_placeholder} {...field} />
                                 </FormControl>
                                 <FormMessage />
                             </FormItem>
@@ -67,9 +70,9 @@ export function ContactForm() {
                         name="email"
                         render={({ field }) => (
                             <FormItem>
-                                <FormLabel>Correo Electrónico</FormLabel>
+                                <FormLabel>{translations.contact.form_email_label}</FormLabel>
                                 <FormControl>
-                                    <Input placeholder="tu@email.com" {...field} />
+                                    <Input placeholder={translations.contact.form_email_placeholder} {...field} />
                                 </FormControl>
                                 <FormMessage />
                             </FormItem>
@@ -81,9 +84,9 @@ export function ContactForm() {
                     name="subject"
                     render={({ field }) => (
                         <FormItem>
-                            <FormLabel>Asunto</FormLabel>
+                            <FormLabel>{translations.contact.form_subject_label}</FormLabel>
                             <FormControl>
-                                <Input placeholder="Asunto de tu mensaje" {...field} />
+                                <Input placeholder={translations.contact.form_subject_placeholder} {...field} />
                             </FormControl>
                             <FormMessage />
                         </FormItem>
@@ -94,10 +97,10 @@ export function ContactForm() {
                     name="message"
                     render={({ field }) => (
                         <FormItem>
-                            <FormLabel>Mensaje</FormLabel>
+                            <FormLabel>{translations.contact.form_message_label}</FormLabel>
                             <FormControl>
                                 <Textarea
-                                placeholder="Escribe tu mensaje aquí..."
+                                placeholder={translations.contact.form_message_placeholder}
                                 className="resize-y min-h-[120px]"
                                 {...field}
                                 />
@@ -106,7 +109,7 @@ export function ContactForm() {
                         </FormItem>
                     )}
                 />
-                <Button type="submit">Enviar Mensaje</Button>
+                <Button type="submit">{translations.contact.form_button}</Button>
             </form>
         </Form>
     );

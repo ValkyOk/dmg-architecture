@@ -1,7 +1,10 @@
+"use client";
 import { Building2, Facebook, Instagram, Linkedin } from 'lucide-react';
 import Link from 'next/link';
+import { useLanguage } from '@/context/language-context';
 
 export function Footer() {
+  const { translations } = useLanguage();
   return (
     <footer className="bg-muted text-muted-foreground">
       <div className="container py-8">
@@ -10,7 +13,7 @@ export function Footer() {
             <Building2 className="h-6 w-6 text-primary" />
             <span className="font-bold font-headline text-lg">DMG ARCHITECTURE</span>
           </div>
-          <p className="text-sm text-center md:text-left">© {new Date().getFullYear()} David Montoya Giraldo. Todos los derechos reservados.</p>
+          <p className="text-sm text-center md:text-left">© {new Date().getFullYear()} David Montoya Giraldo. {translations.footer.copy}</p>
           <div className="flex items-center space-x-4">
             <Link href="#" aria-label="Facebook" className="hover:text-primary transition-colors">
               <Facebook className="h-5 w-5" />

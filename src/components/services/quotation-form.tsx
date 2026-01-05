@@ -19,29 +19,32 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Checkbox } from "@/components/ui/checkbox";
 import { useToast } from "@/hooks/use-toast";
 import { Textarea } from "@/components/ui/textarea";
-
-const formSchema = z.object({
-  name: z.string().min(2, "El nombre debe tener al menos 2 caracteres."),
-  email: z.string().email("Por favor ingresa un correo electrónico válido."),
-  projectType: z.string({
-    required_error: "Por favor selecciona un tipo de proyecto.",
-  }),
-  size: z.coerce.number().min(1, "El tamaño debe ser mayor a 0."),
-  deliverables: z.array(z.string()).refine((value) => value.some((item) => item), {
-    message: "Debes seleccionar al menos un entregable.",
-  }),
-  details: z.string().optional(),
-});
-
-const deliverablesItems = [
-    { id: "plans", label: "Planos Arquitectónicos" },
-    { id: "renders", label: "Renders / Visualización 3D" },
-    { id: "interior", label: "Diseño de Interiores" },
-    { id: "consulting", label: "Asesoría" },
-]
+import { useLanguage } from "@/context/language-context";
 
 export function QuotationForm() {
+    const { translations } = useLanguage();
     const { toast } = useToast();
+
+    const formSchema = z.object({
+        name: z.string().min(2, translations.validation.name_min),
+        email: z.string().email(translations.validation.email_invalid),
+        projectType: z.string({
+            required_error: translations.validation.project_type_required,
+        }),
+        size: z.coerce.number().min(1, translations.validation.size_min),
+        deliverables: z.array(z.string()).refine((value) => value.some((item) => item), {
+            message: translations.validation.deliverables_required,
+        }),
+        details: z.string().optional(),
+    });
+
+    const deliverablesItems = [
+        { id: "plans", label: translations.quotation_form.deliverable_plans },
+        { id: "renders", label: translations.quotation_form.deliverable_renders },
+        { id: "interior", label: translations.quotation_form.deliverable_interior },
+        { id: "consulting", label: translations.quotation_form.deliverable_consulting },
+    ]
+
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: {
@@ -56,8 +59,8 @@ export function QuotationForm() {
     function onSubmit(values: z.infer<typeof formSchema>) {
         console.log(values);
         toast({
-            title: "Solicitud Enviada",
-            description: "Gracias por tu interés. Nos pondremos en contacto contigo pronto.",
+            title: translations.quotation_form.toast_success_title,
+            description: translations.quotation_form.toast_success_desc,
         });
         form.reset();
     }
@@ -71,9 +74,9 @@ export function QuotationForm() {
                         name="name"
                         render={({ field }) => (
                             <FormItem>
-                                <FormLabel>Nombre Completo</FormLabel>
+                                <FormLabel>{translations.quotation_form.name_label}</FormLabel>
                                 <FormControl>
-                                    <Input placeholder="Ej: Juan Pérez" {...field} />
+                                    <Input placeholder={translations.quotation_form.name_placeholder} {...field} />
                                 </FormControl>
                                 <FormMessage />
                             </FormItem>
@@ -84,9 +87,9 @@ export function QuotationForm() {
                         name="email"
                         render={({ field }) => (
                             <FormItem>
-                                <FormLabel>Correo Electrónico</FormLabel>
+                                <FormLabel>{translations.quotation_form.email_label}</FormLabel>
                                 <FormControl>
-                                    <Input placeholder="Ej: juan.perez@email.com" {...field} />
+                                    <Input placeholder={translations.quotation_form.email_placeholder} {...field} />
                                 </FormControl>
                                 <FormMessage />
                             </FormItem>
@@ -97,18 +100,18 @@ export function QuotationForm() {
                         name="projectType"
                         render={({ field }) => (
                             <FormItem>
-                                <FormLabel>Tipo de Proyecto</FormLabel>
+                                <FormLabel>{translations.quotation_form.project_type_label}</FormLabel>
                                 <Select onValueChange={field.onChange} defaultValue={field.value}>
                                     <FormControl>
                                         <SelectTrigger>
-                                            <SelectValue placeholder="Selecciona una opción" />
+                                            <SelectValue placeholder={translations.quotation_form.project_type_placeholder} />
                                         </SelectTrigger>
                                     </FormControl>
                                     <SelectContent>
-                                        <SelectItem value="residencial">Residencial</SelectItem>
-                                        <SelectItem value="comercial">Comercial</SelectItem>
-                                        <SelectItem value="remodelacion">Remodelación</SelectItem>
-                                        <SelectItem value="otro">Otro</SelectItem>
+                                        <SelectItem value="residencial">{translations.quotation_form.project_type_residential}</SelectItem>
+                                        <SelectItem value="comercial">{translations.quotation_form.project_type_commercial}</SelectItem>
+                                        <SelectItem value="remodelacion">{translations.quotation_form.project_type_remodeling}</SelectItem>
+                                        <SelectItem value="otro">{translations.quotation_form.project_type_other}</SelectItem>
                                     </SelectContent>
                                 </Select>
                                 <FormMessage />
@@ -120,9 +123,9 @@ export function QuotationForm() {
                         name="size"
                         render={({ field }) => (
                             <FormItem>
-                                <FormLabel>Tamaño aproximado (m²)</FormLabel>
+                                <FormLabel>{translations.quotation_form.size_label}</FormLabel>
                                 <FormControl>
-                                    <Input type="number" placeholder="Ej: 120" {...field} />
+                                    <Input type="number" placeholder={translations.quotation_form.size_placeholder} {...field} />
                                 </FormControl>
                                 <FormMessage />
                             </FormItem>
@@ -135,9 +138,9 @@ export function QuotationForm() {
                     render={() => (
                         <FormItem>
                         <div className="mb-4">
-                            <FormLabel className="text-base">Servicios Requeridos</FormLabel>
+                            <FormLabel className="text-base">{translations.quotation_form.deliverables_label}</FormLabel>
                             <FormDescription>
-                            Selecciona los entregables que necesitas para tu proyecto.
+                                {translations.quotation_form.deliverables_desc}
                             </FormDescription>
                         </div>
                         <div className="grid md:grid-cols-2 gap-4">
@@ -185,10 +188,10 @@ export function QuotationForm() {
                     name="details"
                     render={({ field }) => (
                         <FormItem>
-                            <FormLabel>Detalles Adicionales</FormLabel>
+                            <FormLabel>{translations.quotation_form.details_label}</FormLabel>
                             <FormControl>
                                 <Textarea
-                                placeholder="Cuéntanos más sobre tu proyecto, tus ideas y requerimientos."
+                                placeholder={translations.quotation_form.details_placeholder}
                                 className="resize-y"
                                 {...field}
                                 />
@@ -198,7 +201,7 @@ export function QuotationForm() {
                     )}
                 />
 
-                <Button type="submit">Solicitar Cotización</Button>
+                <Button type="submit">{translations.quotation_form.button}</Button>
             </form>
         </Form>
     );

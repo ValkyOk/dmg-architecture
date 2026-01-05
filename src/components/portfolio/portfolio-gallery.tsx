@@ -4,16 +4,18 @@ import { useState } from 'react';
 import { projects, type ProjectType } from '@/lib/data';
 import { ProjectCard } from './project-card';
 import { Button } from '@/components/ui/button';
-
-const filterOptions: { label: string; value: ProjectType | 'all' }[] = [
-  { label: 'Todos', value: 'all' },
-  { label: 'Completos', value: 'completed' },
-  { label: 'Renders', value: 'render' },
-  { label: 'Planos', value: 'plan' },
-];
+import { useLanguage } from '@/context/language-context';
 
 export function PortfolioGallery() {
+  const { translations } = useLanguage();
   const [filter, setFilter] = useState<ProjectType | 'all'>('all');
+  
+  const filterOptions: { label: string; value: ProjectType | 'all' }[] = [
+    { label: translations.portfolio.filter_all, value: 'all' },
+    { label: translations.portfolio.filter_completed, value: 'completed' },
+    { label: translations.portfolio.filter_renders, value: 'render' },
+    { label: translations.portfolio.filter_plans, value: 'plan' },
+  ];
 
   const filteredProjects = filter === 'all'
     ? projects

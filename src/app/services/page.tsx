@@ -1,26 +1,31 @@
+"use client";
+
 import { QuotationForm } from '@/components/services/quotation-form';
 import { Card, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { CheckCircle } from 'lucide-react';
-
-const servicesList = [
-    "Planos arquitectónicos (distribución, cortes, fachadas)",
-    "Renders fotorrealistas y visualización 3D",
-    "Recorridos virtuales interactivos",
-    "Asesoría en selección de materiales y acabados",
-    "Diseño de interiores y mobiliario",
-    "Supervisión arquitectónica de obra",
-    "Estudios de factibilidad y normativa",
-    "Diseño paisajístico y de exteriores",
-];
+import { useLanguage } from '@/context/language-context';
 
 export default function ServicesPage() {
+  const { translations } = useLanguage();
+  
+  const servicesList = [
+      translations.services.service_1,
+      translations.services.service_2,
+      translations.services.service_3,
+      translations.services.service_4,
+      translations.services.service_5,
+      translations.services.service_6,
+      translations.services.service_7,
+      translations.services.service_8,
+  ];
+
   return (
     <div className="container py-16 md:py-24">
       <div className="grid lg:grid-cols-2 gap-16 items-start">
         <div>
-          <h1 className="text-4xl md:text-5xl font-headline text-foreground mb-4">Nuestros Servicios</h1>
+          <h1 className="text-4xl md:text-5xl font-headline text-foreground mb-4">{translations.services.title}</h1>
           <p className="max-w-2xl text-lg text-muted-foreground mb-8">
-            Ofrecemos una gama completa de servicios para llevar tu proyecto desde la concepción hasta la realidad, con un enfoque en la calidad, la innovación y la satisfacción del cliente.
+            {translations.services.subtitle}
           </p>
           <div className="space-y-4">
             {servicesList.map((service, index) => (
@@ -35,8 +40,8 @@ export default function ServicesPage() {
         <div>
             <Card className="p-6 md:p-8 shadow-lg bg-card">
                 <CardHeader className="p-0 mb-6">
-                    <CardTitle className="font-headline text-3xl">Solicita una Cotización</CardTitle>
-                    <CardDescription>Completa el formulario y nos pondremos en contacto para darte un presupuesto personalizado.</CardDescription>
+                    <CardTitle className="font-headline text-3xl">{translations.services.quotation_title}</CardTitle>
+                    <CardDescription>{translations.services.quotation_subtitle}</CardDescription>
                 </CardHeader>
                 <QuotationForm />
             </Card>

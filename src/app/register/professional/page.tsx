@@ -1,3 +1,5 @@
+"use client";
+
 import { Button } from "@/components/ui/button"
 import {
   Card,
@@ -8,39 +10,41 @@ import {
 } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
+import { useLanguage } from "@/context/language-context"
 import Link from "next/link"
 
 export default function RegisterProfessionalPage() {
+  const { translations } = useLanguage();
   return (
     <div className="container flex items-center justify-center py-16 md:py-24 min-h-[calc(100vh-12rem)]">
       <Card className="w-full max-w-md">
         <CardHeader>
-          <CardTitle className="font-headline text-2xl">Registro de Profesional</CardTitle>
-          <CardDescription>Únete a nuestra red de colaboradores. Completa tu registro para empezar.</CardDescription>
+          <CardTitle className="font-headline text-2xl">{translations.register_professional.title}</CardTitle>
+          <CardDescription>{translations.register_professional.desc}</CardDescription>
         </CardHeader>
         <CardContent>
           <form className="space-y-4">
             <div className="space-y-2">
-              <Label htmlFor="name">Nombre Completo</Label>
-              <Input id="name" placeholder="Ana López" required />
+              <Label htmlFor="name">{translations.register_professional.name_label}</Label>
+              <Input id="name" placeholder={translations.register_professional.name_placeholder} required />
             </div>
              <div className="space-y-2">
-              <Label htmlFor="specialty">Especialidad</Label>
-              <Input id="specialty" placeholder="Ej: Ingeniero Civil, Diseñador de interiores" required />
+              <Label htmlFor="specialty">{translations.register_professional.specialty_label}</Label>
+              <Input id="specialty" placeholder={translations.register_professional.specialty_placeholder} required />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="email">Correo Electrónico</Label>
-              <Input id="email" type="email" placeholder="tu@email.com" required />
+              <Label htmlFor="email">{translations.register_professional.email_label}</Label>
+              <Input id="email" type="email" placeholder={translations.register_professional.email_placeholder} required />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="password">Contraseña</Label>
+              <Label htmlFor="password">{translations.register_professional.password_label}</Label>
               <Input id="password" type="password" required />
             </div>
-            <Button type="submit" className="w-full">Registrarse</Button>
+            <Button type="submit" className="w-full">{translations.register_professional.button}</Button>
             <div className="mt-4 text-center text-sm">
-              ¿Ya eres colaborador?{" "}
+              {translations.register_professional.login_prompt}{" "}
               <Link href="/login" className="underline hover:text-primary">
-                Ingresa aquí
+                {translations.register_professional.login_link}
               </Link>
             </div>
           </form>

@@ -1,19 +1,22 @@
+"use client";
+
 import type { Project } from '@/lib/data';
 import Image from 'next/image';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
+import { useLanguage } from '@/context/language-context';
 
 interface ProjectCardProps {
   project: Project;
 }
 
-const typeMap: Record<Project['type'], { label: string, variant: 'default' | 'secondary' | 'outline' }> = {
-  completed: { label: 'Completo', variant: 'default' },
-  render: { label: 'Render', variant: 'secondary' },
-  plan: { label: 'Plano', variant: 'outline' },
-};
-
 export function ProjectCard({ project }: ProjectCardProps) {
+  const { translations } = useLanguage();
+  const typeMap: Record<Project['type'], { label: string, variant: 'default' | 'secondary' | 'outline' }> = {
+    completed: { label: translations.portfolio.project_type_completed, variant: 'default' },
+    render: { label: translations.portfolio.project_type_render, variant: 'secondary' },
+    plan: { label: translations.portfolio.project_type_plan, variant: 'outline' },
+  };
   const { label, variant } = typeMap[project.type];
   
   return (
