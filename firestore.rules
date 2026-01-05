@@ -1,0 +1,174 @@
+/**
+ * @file firestore.rules
+ * @description Security rules for the DMG Architecture Hub Firestore database.
+ *
+ * ## Core Philosophy
+ * This ruleset enforces a strict user-ownership model combined with role-based access for public data.
+ * Professionals and Clients can only access and manage their own data. Publicly visible data,
+ * like services, is readable by anyone but can only be modified by authorized administrators.
+ * This ensures a high level of security and data privacy.
+ *
+ * ## Data Structure
+ * - /professionals/{professionalId}: Stores individual professional profiles.
+ *   - /projects/{projectId}: Subcollection for projects owned by the parent professional.
+ * - /clients/{clientId}: Stores individual client profiles.
+ * - /services/{serviceId}: A top-level collection of services offered, intended for public read access.
+ * - /quotationRequests/{quotationRequestId}: A top-level collection for quote requests submitted by clients.
+ *
+ * ## Key Security Decisions
+ * - **No User Listing**: Listing all users from the `/professionals` or `/clients` collections is strictly prohibited to protect user privacy.
+ * - **Admin-Only Writes for Public Data**: The `/services` collection is publicly readable, but write operations are disabled pending the implementation of an administrator role system.
+ * - **Strict Ownership**: All user-generated content (profiles, projects, quotes) is protected by ownership checks, ensuring users can only interact with their own documents.
+ * - **Path and Data Consistency**: Rules enforce that internal ID fields (e.g., `professionalId` in a project) must match the document's path, ensuring relational integrity and preventing data misattribution.
+ *
+ * ## Denormalization for Authorization
+ * To create simpler and more performant rules, authorization data is denormalized. For example, a `Project` document under `/professionals/{professionalId}/projects/{projectId}`
+ * contains its own `professionalId` field. This allows rules to authorize access by inspecting the document's data directly, avoiding slow and costly `get()` calls to parent documents.
+ *
+ * ## Structural Segregation
+ * Data with different access patterns are stored in separate top-level collections (e.g., `clients`, `professionals`, `services`). This simplifies rule logic and enables secure querying,
+ * as rules do not need to filter results based on content.
+ */
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // -------------------------------------------------------------------------
+    // Helper Functions
+    // -------------------------------------------------------------------------
+
+    /**
+     * Checks if the user is authenticated.
+     */
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    /**
+     * Checks if the authenticated user's UID matches the provided userId.
+     * This is the primary function for verifying document ownership.
+     */
+    function isOwner(userId) {
+      return isSignedIn() && request.auth.uid == userId;
+    }
+
+    /**
+     * Checks if a document currently exists in Firestore.
+     * This is crucial for securing update and delete operations.
+     */
+    function isExistingDoc() {
+      return resource != null;
+    }
+
+    /**
+     * A composite check for update/delete operations, ensuring the user is the
+     * owner of an existing document.
+     */
+    function isExistingOwner(userId) {
+      return isOwner(userId) && isExistingDoc();
+    }
+
+    /**
+     * Validates that the user creating a document is the owner, identified by
+     * a specific field within the new document's data.
+     * Used for top-level collections where ownership is not in the path.
+     */
+    function isCreatingOwnedDoc(ownerIdField) {
+      return request.resource.data[ownerIdField] == request.auth.uid;
+    }
+
+    /**
+     * Ensures that a specific field cannot be changed during an update operation.
+     * Critical for maintaining immutable ownership links (e.g., creatorId).
+     */
+    function isImmutable(field) {
+      return request.resource.data[field] == resource.data[field];
+    }
+
+    // -------------------------------------------------------------------------
+    // Collection Rules
+    // -------------------------------------------------------------------------
+
+    /**
+     * @description Professionals can create and manage their own profile.
+     * @path /professionals/{professionalId}
+     * @allow (create) An authenticated user creating their own profile at `/professionals/user_123`.
+     * @deny (create) A user trying to create a profile for another user at `/professionals/user_456`.
+     * @deny (list) Any user attempting to list all professionals.
+     * @principle Restricts access to a user's own data tree and enforces self-creation.
+     */
+    match /professionals/{professionalId} {
+      allow get: if isOwner(professionalId);
+      allow list: if false;
+      allow create: if isOwner(professionalId) && request.resource.data.id == professionalId;
+      allow update: if isExistingOwner(professionalId) && isImmutable('id');
+      allow delete: if isExistingOwner(professionalId);
+    }
+
+    /**
+     * @description A professional can manage the projects within their own profile.
+     * @path /professionals/{professionalId}/projects/{projectId}
+     * @allow (create) The professional 'user_123' creating a project in their own subcollection.
+     * @deny (create) The professional 'user_456' trying to create a project under 'user_123'.
+     * @deny (update) Any user trying to change the `professionalId` of an existing project.
+     * @principle Enforces document ownership for all operations based on the parent path. Validates relational integrity.
+     */
+    match /professionals/{professionalId}/projects/{projectId} {
+      allow get: if isOwner(professionalId);
+      allow list: if isOwner(professionalId);
+      allow create: if isOwner(professionalId) && request.resource.data.professionalId == professionalId;
+      allow update: if isExistingOwner(professionalId) && isImmutable('professionalId');
+      allow delete: if isExistingOwner(professionalId);
+    }
+
+    /**
+     * @description Clients can create and manage their own profile.
+     * @path /clients/{clientId}
+     * @allow (create) An authenticated user creating their own profile at `/clients/user_abc`.
+     * @deny (create) A user trying to create a profile for another user at `/clients/user_xyz`.
+     * @deny (list) Any user attempting to list all clients.
+     * @principle Restricts access to a user's own data and enforces self-creation.
+     */
+    match /clients/{clientId} {
+      allow get: if isOwner(clientId);
+      allow list: if false;
+      allow create: if isOwner(clientId) && request.resource.data.id == clientId;
+      allow update: if isExistingOwner(clientId) && isImmutable('id');
+      allow delete: if isExistingOwner(clientId);
+    }
+
+    /**
+     * @description Service listings are public for anyone to read.
+     * @path /services/{serviceId}
+     * @allow (get) Any user, signed in or not, retrieving a service document.
+     * @allow (list) Any user, signed in or not, listing all available services.
+     * @deny (create, update, delete) Any user attempting to modify service data.
+     * @principle Secures public data by allowing universal read access while restricting all writes.
+     */
+    match /services/{serviceId} {
+      allow get: if true;
+      allow list: if true;
+      // CRITICAL: Write access is disabled. An admin role system is required to grant modification rights.
+      allow create: if false; // TODO: Implement admin-only access control.
+      allow update: if false; // TODO: Implement admin-only access control.
+      allow delete: if false; // TODO: Implement admin-only access control.
+    }
+
+    /**
+     * @description Clients can create quotation requests, which are private to them.
+     * @path /quotationRequests/{quotationRequestId}
+     * @allow (create) A signed-in client creating a request where `clientId` matches their auth UID.
+     * @allow (get) The client who created the request retrieving it.
+     * @deny (get) A different client or a professional trying to read another user's request.
+     * @deny (list) Any user attempting to list all quotation requests in the system.
+     * @principle Enforces document ownership based on an internal 'clientId' field for reads, updates, and deletes.
+     */
+    match /quotationRequests/{quotationRequestId} {
+      allow get: if isExistingOwner(resource.data.clientId);
+      allow list: if false;
+      allow create: if isSignedIn() && isCreatingOwnedDoc('clientId');
+      allow update: if isExistingOwner(resource.data.clientId) && isImmutable('clientId');
+      allow delete: if isExistingOwner(resource.data.clientId);
+    }
+  }
+}

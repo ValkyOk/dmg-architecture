@@ -1,0 +1,299 @@
+{
+  "entities": {
+    "Project": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "Project",
+      "type": "object",
+      "description": "Represents an architectural project showcased in the portfolio.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the project."
+        },
+        "title": {
+          "type": "string",
+          "description": "Title of the project."
+        },
+        "description": {
+          "type": "string",
+          "description": "Detailed description of the project."
+        },
+        "projectType": {
+          "type": "string",
+          "description": "Type of project (e.g., 'plan', 'render', 'completed')."
+        },
+        "imageUrl": {
+          "type": "string",
+          "description": "URL of the project's main image.",
+          "format": "uri"
+        },
+        "imageUrls": {
+          "type": "array",
+          "description": "URLs of additional images for the project.",
+          "items": {
+            "type": "string"
+          }
+        },
+        "professionalId": {
+          "type": "string",
+          "description": "Reference to Professional. (Relationship: Professional 1:N Project)"
+        }
+      },
+      "required": [
+        "id",
+        "title",
+        "description",
+        "projectType",
+        "imageUrl",
+        "professionalId"
+      ]
+    },
+    "Service": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "Service",
+      "type": "object",
+      "description": "Represents a service offered by DMG Architecture.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the service."
+        },
+        "name": {
+          "type": "string",
+          "description": "Name of the service (e.g., 'Architectural Design', 'Interior Design')."
+        },
+        "description": {
+          "type": "string",
+          "description": "Detailed description of the service."
+        },
+        "price": {
+          "type": "number",
+          "description": "Base price of the service."
+        }
+      },
+      "required": [
+        "id",
+        "name",
+        "description",
+        "price"
+      ]
+    },
+    "Client": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "Client",
+      "type": "object",
+      "description": "Represents a client of DMG Architecture.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the client."
+        },
+        "firstName": {
+          "type": "string",
+          "description": "First name of the client."
+        },
+        "lastName": {
+          "type": "string",
+          "description": "Last name of the client."
+        },
+        "email": {
+          "type": "string",
+          "description": "Email address of the client.",
+          "format": "email"
+        },
+        "phone": {
+          "type": "string",
+          "description": "Phone number of the client."
+        }
+      },
+      "required": [
+        "id",
+        "firstName",
+        "lastName",
+        "email",
+        "phone"
+      ]
+    },
+    "Professional": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "Professional",
+      "type": "object",
+      "description": "Represents an architect or professional registered on the platform.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the professional."
+        },
+        "firstName": {
+          "type": "string",
+          "description": "First name of the professional."
+        },
+        "lastName": {
+          "type": "string",
+          "description": "Last name of the professional."
+        },
+        "email": {
+          "type": "string",
+          "description": "Email address of the professional.",
+          "format": "email"
+        },
+        "bio": {
+          "type": "string",
+          "description": "Brief biography of the professional."
+        }
+      },
+      "required": [
+        "id",
+        "firstName",
+        "lastName",
+        "email",
+        "bio"
+      ]
+    },
+    "QuotationRequest": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "QuotationRequest",
+      "type": "object",
+      "description": "Represents a request for a service quotation.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the quotation request."
+        },
+        "clientId": {
+          "type": "string",
+          "description": "Reference to Client. (Relationship: Client 1:N QuotationRequest)"
+        },
+        "serviceId": {
+          "type": "string",
+          "description": "Reference to Service. (Relationship: Service 1:N QuotationRequest)"
+        },
+        "projectType": {
+          "type": "string",
+          "description": "Type of project requested (e.g., 'New Construction', 'Renovation')."
+        },
+        "projectSize": {
+          "type": "number",
+          "description": "Size of the project in square meters."
+        },
+        "needsRender": {
+          "type": "boolean",
+          "description": "Indicates if the client needs a render for the project."
+        },
+        "needsBlueprint": {
+          "type": "boolean",
+          "description": "Indicates if the client needs a blueprint for the project."
+        },
+        "additionalDetails": {
+          "type": "string",
+          "description": "Additional details or specifications provided by the client."
+        }
+      },
+      "required": [
+        "id",
+        "clientId",
+        "serviceId",
+        "projectType",
+        "projectSize",
+        "needsRender",
+        "needsBlueprint",
+        "additionalDetails"
+      ]
+    }
+  },
+  "auth": {
+    "providers": [
+      "password",
+      "anonymous"
+    ]
+  },
+  "firestore": {
+    "structure": [
+      {
+        "path": "/professionals/{professionalId}",
+        "definition": {
+          "entityName": "Professional",
+          "schema": {
+            "$ref": "#/backend/entities/Professional"
+          },
+          "description": "Stores professional profiles. Accessible to the professional and admins.",
+          "params": [
+            {
+              "name": "professionalId",
+              "description": "The unique identifier of the professional."
+            }
+          ]
+        }
+      },
+      {
+        "path": "/professionals/{professionalId}/projects/{projectId}",
+        "definition": {
+          "entityName": "Project",
+          "schema": {
+            "$ref": "#/backend/entities/Project"
+          },
+          "description": "Stores projects owned by a professional. Includes denormalized 'professionalId' for authorization independence.",
+          "params": [
+            {
+              "name": "professionalId",
+              "description": "The unique identifier of the professional."
+            },
+            {
+              "name": "projectId",
+              "description": "The unique identifier of the project."
+            }
+          ]
+        }
+      },
+      {
+        "path": "/clients/{clientId}",
+        "definition": {
+          "entityName": "Client",
+          "schema": {
+            "$ref": "#/backend/entities/Client"
+          },
+          "description": "Stores client profiles. Accessible to the client and authorized personnel.",
+          "params": [
+            {
+              "name": "clientId",
+              "description": "The unique identifier of the client."
+            }
+          ]
+        }
+      },
+      {
+        "path": "/services/{serviceId}",
+        "definition": {
+          "entityName": "Service",
+          "schema": {
+            "$ref": "#/backend/entities/Service"
+          },
+          "description": "Stores the services offered by DMG Architecture. Publicly readable, but write access is restricted.",
+          "params": [
+            {
+              "name": "serviceId",
+              "description": "The unique identifier of the service."
+            }
+          ]
+        }
+      },
+      {
+        "path": "/quotationRequests/{quotationRequestId}",
+        "definition": {
+          "entityName": "QuotationRequest",
+          "schema": {
+            "$ref": "#/backend/entities/QuotationRequest"
+          },
+          "description": "Stores quotation requests made by clients. Includes the 'clientId' for association. Write access granted to clients, read access to authorized professionals.",
+          "params": [
+            {
+              "name": "quotationRequestId",
+              "description": "The unique identifier of the quotation request."
+            }
+          ]
+        }
+      }
+    ],
+    "reasoning": "The Firestore data structure is designed to support DMG Architecture Hub's requirements for showcasing projects, providing service quotations, managing client and professional accounts, and offering multi-language support. The design prioritizes authorization independence, clarity, and scalability.\n\n**Authorization Independence:**\n\n*   The structure avoids hierarchical authorization dependencies by denormalizing authorization context when needed. For example, if access to a subcollection depends on the professional who owns it, the professional's ID is included directly in the documents within the subcollection, removing the need for `get()` calls in security rules.\n\n**Structural Segregation:**\n\n*   Documents with different security requirements are stored in separate collections.  For example, professional data and client data are stored separately, allowing for distinct access control rules for each.\n\n**Access Modeling:**\n\n*   Path-based ownership is used for entities owned by professionals, such as their projects (`/professionals/{professionalId}/projects/{projectId}`).\n\n**QAPs (Rules are not Filters):**\n\n*   Secure list operations are supported by structural segregation. Each collection has a defined security posture, enabling straightforward rules that prevent filtering based on user roles or data content.\n\n**Data Clarity and Predictability:**\n\n*   The structure enforces consistent naming conventions and uses explicit state modeling where appropriate. This ensures predictability and simplifies debugging.\n\n**Explanation of Paths:**\n\n*   `/professionals/{professionalId}`: Stores professional profiles. Access is typically restricted to the professional themselves or administrative users.\n*   `/professionals/{professionalId}/projects/{projectId}`: Stores projects owned by a professional. The `professionalId` is denormalized into the project document to allow authorization without a `get()` call.\n*   `/clients/{clientId}`: Stores client profiles. Access is restricted to the client themselves and authorized personnel.\n*   `/services/{serviceId}`: Stores the services offered by DMG Architecture. This is a global collection accessible for reading by all users, but write access is restricted to admins.\n*   `/quotationRequests/{quotationRequestId}`: Stores quotation requests made by clients. Includes the `clientId` to associate the request with the client. Write access will be granted to clients and read access to authorized professionals.\n\nThis structure enables secure, scalable, and maintainable security rules that avoid complex `get()` calls and support atomic operations, ensuring the integrity and security of the DMG Architecture Hub application."
+  }
+}
