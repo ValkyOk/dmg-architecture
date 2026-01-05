@@ -6,7 +6,6 @@ import {
   Folder,
   ChevronLeft,
   Search,
-  MessageSquare,
   File,
   Video,
   Link as LinkIcon,
@@ -20,6 +19,7 @@ import {
   MoreVertical,
   PlusCircle,
   Bell,
+  Send,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -43,6 +43,15 @@ type Task = {
   imageUrl?: string;
 };
 
+type Message = {
+    id: string;
+    author: string;
+    avatar: string;
+    text: string;
+    timestamp: string;
+};
+
+
 const initialTasks: Task[] = [
     { id: 'task1', label: 'Enviar planos al ayuntamiento', completed: false, category: 'task', date: '28 DE AGOSTO', timestamp: '10:00' },
     { id: 'task2', label: 'Memoria justificativa.doc', completed: false, category: 'file', date: '28 DE AGOSTO', timestamp: '15:00' },
@@ -51,9 +60,17 @@ const initialTasks: Task[] = [
     { id: 'task5', label: 'Alzado de la cara norte, para que veas la distribución de los materiales.', completed: false, category: 'image', date: 'HOY', imageUrl: 'https://images.unsplash.com/photo-1670589953882-b94c9cb380f5?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw3fHxtb2Rlcm4lMjBob3VzZXxlbnwwfHx8fDE3Njc2NDM1MDl8MA&ixlib=rb-4.1.0&q=80&w=1080'},
 ];
 
+const initialMessages: Message[] = [
+    { id: 'msg1', author: 'Cliente A', avatar: 'https://i.pravatar.cc/150?u=a042581f4e29026704d', text: '¡Me encanta el alzado! ¿Podemos probar con un acabado de madera más oscuro en la fachada?', timestamp: 'Hace 5m' },
+    { id: 'msg2', author: 'David Montoya', avatar: 'https://i.pravatar.cc/150?u=a042581f4e29026704d', text: 'Claro, prepararé una nueva versión con esa opción. Te la comparto en breve.', timestamp: 'Hace 2m' },
+];
+
 
 export default function ProfessionalDashboardPage() {
   const [tasks, setTasks] = useState<Task[]>(initialTasks);
+  const [messages, setMessages] = useState<Message[]>(initialMessages);
+  const [newMessage, setNewMessage] = useState("");
+
 
   const toggleTask = (taskId: string) => {
     setTasks(prevTasks =>
@@ -63,6 +80,19 @@ export default function ProfessionalDashboardPage() {
     );
   };
   
+  const handleSendMessage = () => {
+    if (newMessage.trim() === "") return;
+    const newMsg: Message = {
+        id: `msg${messages.length + 1}`,
+        author: 'David Montoya',
+        avatar: 'https://i.pravatar.cc/150?u=a042581f4e29026704d',
+        text: newMessage,
+        timestamp: 'Ahora',
+    };
+    setMessages([...messages, newMsg]);
+    setNewMessage("");
+  };
+
   const completedTasks = tasks.filter(task => task.category === 'task' && task.completed).length;
   const totalTasks = tasks.filter(task => task.category === 'task').length;
   const progressPercentage = totalTasks > 0 ? (completedTasks / totalTasks) * 100 : 0;
@@ -263,7 +293,7 @@ export default function ProfessionalDashboardPage() {
           </Button>
         </div>
         
-        <div className="flex-grow space-y-4">
+        <div className="space-y-4">
             <p className="text-sm font-semibold text-muted-foreground">CLIENTES</p>
             <div className="flex items-center gap-2">
                 <Avatar>
@@ -275,28 +305,63 @@ export default function ProfessionalDashboardPage() {
                     <AvatarFallback>B</AvatarFallback>
                 </Avatar>
             </div>
-            <p className="text-sm text-foreground/80">
+            <p className="text-sm text-foreground/80 mb-4">
                 Vivienda unifamiliar de obra nueva. Quieren 4 habitaciones, 2 baños completos, 1 baño de invitados. El terreno está en una urbanización.
             </p>
+        </div>
+
+        <Separator className="my-4"/>
+        
+        <div className="flex-grow space-y-4 overflow-y-auto">
+             {messages.map((message) => (
+                <div key={message.id} className="flex items-start gap-3">
+                    <Avatar className="h-8 w-8">
+                        <AvatarImage src={message.avatar} />
+                        <AvatarFallback>{message.author.charAt(0)}</AvatarFallback>
+                    </Avatar>
+                    <div>
+                        <div className="flex items-center gap-2">
+                             <p className="font-semibold text-sm">{message.author}</p>
+                             <p className="text-xs text-muted-foreground">{message.timestamp}</p>
+                        </div>
+                        <p className="text-sm text-foreground/80">{message.text}</p>
+                    </div>
+                </div>
+            ))}
         </div>
         
         <div className="mt-auto">
             <div className="border-t border-border pt-4">
-                 <Textarea placeholder="Escribe un mensaje..." className="bg-background border-border mb-3"/>
-                 <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-2">
-                        <Button variant="ghost" size="icon"><LinkIcon className="w-4 h-4"/></Button>
-                        <Button variant="ghost" size="icon"><ImageIcon className="w-4 h-4"/></Button>
-                        <Button variant="ghost" size="icon"><Video className="w-4 h-4"/></Button>
-                        <Button variant="ghost" size="icon"><File className="w-4 h-4"/></Button>
-                    </div>
-                     <Button>Enviar</Button>
+                 <div className="relative">
+                    <Textarea 
+                        placeholder="Escribe un mensaje..." 
+                        className="bg-background border-border pr-12"
+                        value={newMessage}
+                        onChange={(e) => setNewMessage(e.target.value)}
+                        onKeyDown={(e) => {
+                            if (e.key === 'Enter' && !e.shiftKey) {
+                                e.preventDefault();
+                                handleSendMessage();
+                            }
+                        }}
+                    />
+                    <Button 
+                        size="icon" 
+                        className="absolute right-2 bottom-2 h-8 w-8"
+                        onClick={handleSendMessage}
+                    >
+                        <Send className="h-4 w-4" />
+                    </Button>
+                 </div>
+                 <div className="flex items-center gap-1 mt-2">
+                    <Button variant="ghost" size="icon" className="h-8 w-8"><LinkIcon className="w-4 h-4"/></Button>
+                    <Button variant="ghost" size="icon" className="h-8 w-8"><ImageIcon className="w-4 h-4"/></Button>
+                    <Button variant="ghost" size="icon" className="h-8 w-8"><File className="w-4 h-4"/></Button>
                  </div>
             </div>
         </div>
       </aside>
     </div>
   );
-}
 
     
