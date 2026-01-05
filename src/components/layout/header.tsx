@@ -19,7 +19,7 @@ export function Header() {
   ];
 
   return (
-    <header className="sticky top-0 z-50 w-full border-b bg-background/80 backdrop-blur supports-[backdrop-filter]:bg-background/50">
+    <header className="sticky top-0 z-50 w-full border-b bg-background/80 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="container flex h-16 items-center">
         <div className="flex-1 flex justify-start">
           <Link href="/" className="flex items-center space-x-2">
@@ -36,7 +36,7 @@ export function Header() {
         </nav>
         <div className="flex flex-1 items-center justify-end space-x-2 sm:space-x-4">
           <LanguageSwitcher />
-          <Button asChild variant="outline" className="hidden md:inline-flex">
+          <Button asChild className="hidden md:inline-flex">
             <Link href="/login">{translations.header.access}</Link>
           </Button>
           <div className="md:hidden">
