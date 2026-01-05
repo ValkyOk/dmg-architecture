@@ -36,7 +36,7 @@ export default function HomePage() {
         <div className="absolute inset-0 bg-black/50 z-10" />
         
           <Image
-            src="/presentación.jpg"
+            src="/presentacion.jpg"
             alt="Presentación DMG Architecture"
             fill
             className="object-cover"
