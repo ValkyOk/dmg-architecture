@@ -37,7 +37,7 @@ export default function HomePage() {
         
           <Image
             src="/presentdmg.jpg"
-            alt="Presentación DMG Architecture"
+            alt="Presentación DMG ARCHITECTURE"
             fill
             className="object-cover"
             priority
