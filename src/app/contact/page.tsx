@@ -24,14 +24,13 @@ export default function ContactPage() {
                             <div>
                                 <h4 className="font-semibold">Ubicación</h4>
                                 <p>Pereira, Risaralda, Colombia</p>
-                                <p className="text-sm">(Atención con cita previa)</p>
                             </div>
                         </div>
                          <div className="flex items-start gap-4">
                             <Mail className="w-5 h-5 text-accent mt-1" />
                             <div>
                                 <h4 className="font-semibold">Correo Electrónico</h4>
-                                <a href="mailto:Davidm0216@gmail.com" className="hover:text-primary transition-colors">Davidm0216@gmail.com</a>
+                                <a href="mailto:David.montoya@ucp.edu.co" className="hover:text-primary transition-colors">David.montoya@ucp.edu.co</a>
                             </div>
                         </div>
                          <div className="flex items-start gap-4">
