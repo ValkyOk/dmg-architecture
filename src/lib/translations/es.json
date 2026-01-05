@@ -131,14 +131,15 @@
     "dashboard_professional": {
         "title": "Área de Profesionales",
         "subtitle": "Bienvenido a tu espacio de trabajo. Gestiona tus proyectos y recursos.",
-        "upload_title": "Subir Proyecto",
+        "upload_title": "Añadir Proyecto",
         "upload_desc": "Sube nuevos archivos, planos o renders a un proyecto existente o nuevo.",
         "download_title": "Descargar Material",
         "download_desc": "Accede a la librería de recursos exclusivos y materiales de proyectos.",
         "my_projects_title": "Mis Proyectos",
         "my_projects_desc": "Visualiza y gestiona los proyectos en los que estás colaborando.",
         "coming_soon_title": "Próximamente",
-        "coming_soon_desc": "Estamos trabajando en más herramientas para facilitar la colaboración y gestión de proyectos. ¡Mantente atento a las actualizaciones!"
+        "coming_soon_desc": "Estamos trabajando en más herramientas para facilitar la colaboración y gestión de proyectos. ¡Mantente atento a las actualizaciones!",
+        "no_projects": "Aún no tienes proyectos. ¡Añade el primero para empezar!"
     },
     "quotation_form": {
         "name_label": "Nombre Completo",

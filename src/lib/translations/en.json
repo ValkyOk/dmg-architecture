@@ -131,14 +131,15 @@
     "dashboard_professional": {
         "title": "Professional Area",
         "subtitle": "Welcome to your workspace. Manage your projects and resources.",
-        "upload_title": "Upload Project",
+        "upload_title": "Add Project",
         "upload_desc": "Upload new files, plans, or renders to a new or existing project.",
         "download_title": "Download Material",
         "download_desc": "Access the exclusive resource library and project materials.",
         "my_projects_title": "My Projects",
         "my_projects_desc": "View and manage the projects you are collaborating on.",
         "coming_soon_title": "Coming Soon",
-        "coming_soon_desc": "We are working on more tools to facilitate project collaboration and management. Stay tuned for updates!"
+        "coming_soon_desc": "We are working on more tools to facilitate project collaboration and management. Stay tuned for updates!",
+        "no_projects": "You don't have any projects yet. Add your first one to get started!"
     },
     "quotation_form": {
         "name_label": "Full Name",
